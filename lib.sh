@@ -12,6 +12,11 @@ true
 SCRIPTS=/var/scripts
 VMLOGS=/var/log/jitsi
 
+# Ubuntu OS
+DISTRO=$(lsb_release -sr)
+CODENAME=$(lsb_release -sc)
+KEYBOARD_LAYOUT=$(localectl status | grep "Layout" | awk '{print $3}')
+
 # Letsencrypt
 SITES_AVAILABLE="/etc/apache2/sites-available"
 LETSENCRYPTPATH="/etc/letsencrypt"
