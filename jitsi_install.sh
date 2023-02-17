@@ -25,7 +25,7 @@ then
     echo "curl OK"
 else
     apt-get update -q4
-    apt-get install curl -y
+    apt-get install curl whiptail -y
 fi
 
 true
