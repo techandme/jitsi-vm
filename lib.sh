@@ -89,6 +89,23 @@ then
 fi
 }
 
+# Check if process is runnnig: is_process_running dpkg
+is_process_running() {
+PROCESS="$1"
+
+while :
+do
+    RESULT=$(pgrep "${PROCESS}")
+
+    if [ "${RESULT:-null}" = null ]; then
+            break
+    else
+            print_text_in_color "$ICyan" "${PROCESS} is running, waiting for it to stop. Please be patient..."
+            sleep 30
+    fi
+done
+}
+
 msg_box() {
     [ -n "$2" ] && local SUBTITLE=" - $2"
     whiptail --title "$TITLE$SUBTITLE" --msgbox "$1" "$WT_HEIGHT" "$WT_WIDTH" 3>&1 1>&2 2>&3
@@ -521,6 +538,27 @@ done
 
 print_text_in_color() {
 printf "%b%s%b\n" "$1" "$2" "$Color_Off"
+}
+
+version(){
+    local h t v
+
+    [[ $2 = "$1" || $2 = "$3" ]] && return 0
+
+    v=$(printf '%s\n' "$@" | sort -V)
+    h=$(head -n1 <<<"$v")
+    t=$(tail -n1 <<<"$v")
+
+    [[ $2 != "$h" && $2 != "$t" ]]
+}
+
+version_gt() {
+    local v1 v2 IFS=.
+    read -ra v1 <<< "$1"
+    read -ra v2 <<< "$2"
+    printf -v v1 %03d "${v1[@]}"
+    printf -v v2 %03d "${v2[@]}"
+    [[ $v1 > $v2 ]]
 }
 
 add_trusted_key_and_repo() {

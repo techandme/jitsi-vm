@@ -33,7 +33,7 @@ SCRIPT_NAME="Jitsi Install Script"
 SCRIPT_EXPLAINER="This script is installing all requirements that are needed for Jitsi to run.
 It's the first of two parts that are necessary to finish your customized Jitsi installation."
 # shellcheck source=lib.sh
-source <(curl -sL https://raw.githubusercontent.com/nextcloud/vm/master/lib.sh)
+source <(curl -sL https://raw.githubusercontent.com/techandme/jitsi-vm/dev/lib.sh)
 
 # Check for errors + debug code and abort if something isn't right
 # 1 = ON
@@ -86,12 +86,12 @@ install_if_not iputils-ping
 ########################
 
 # Parsody REPO
-curl -sL https://prosody.im/files/prosody-debian-packages.key | tee -a /etc/apt/keyrings/prosody-debian-packages.key
-echo "deb [signed-by=/etc/apt/keyrings/prosody-debian-packages.key] $(lsb_release -sc) main" > /etc/apt/sources.list.d/prosody-debian-packages.list
+curl -sL https://prosody.im/files/prosody-debian-packages.key | sudo tee /etc/apt/keyrings/prosody-debian-packages.key
+echo "deb [signed-by=/etc/apt/keyrings/prosody-debian-packages.key] http://packages.prosody.im/debian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/prosody-debian-packages.list
 
 # Jitsi REPO
 curl -sL https://download.jitsi.org/jitsi-key.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/jitsi-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/jitsi-keyring.gpg] https://download.jitsi.org stable/" > /etc/apt/sources.list.d/jitsi-stable.list
+echo "deb [signed-by=/usr/share/keyrings/jitsi-keyring.gpg] https://download.jitsi.org stable/" | sudo tee /etc/apt/sources.list.d/jitsi-stable.list
 
 # Install more needed dependcies
 install_if_not lua5.2
