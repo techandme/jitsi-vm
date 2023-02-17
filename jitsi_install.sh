@@ -25,8 +25,18 @@ then
     echo "curl OK"
 else
     apt-get update -q4
-    apt-get install curl whiptail -y
+    apt-get install curl -y
 fi
+
+# Install whiptail if not existing
+if [ "$(dpkg-query -W -f='${Status}' "curl" 2>/dev/null | grep -c "ok installed")" = "1" ]
+then
+    echo "whiptail OK"
+else
+    apt-get update -q4
+    apt-get install whiptail -y
+fi
+
 
 true
 SCRIPT_NAME="Jitsi Install Script"
