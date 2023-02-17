@@ -112,21 +112,9 @@ ufw allow 10000/udp
 ufw allow 22/tcp
 ufw allow 3478/udp
 ufw allow 5349/tcp
-ufw enable
+ufw --force enable
 ufw status verbose
 
-exit # test to install parsody
-
-# Install Jitsi
-install_if_not jitsi-meet
-
-sed -i "s|DefaultLimitNOFILE=.*|DefaultLimitNOFILE=65000|g" /etc/systemd/system.conf
-sed -i "s|DefaultLimitNPROC=.*|DefaultLimitNPROC=65000|g" /etc/systemd/system.conf
-sed -i "s|DefaultTasksMax=.*|DefaultTasksMax=65000|g" /etc/systemd/system.conf
-
-apt purge jitsi-meet-prosody -y
-
-
-## TODO for STARTUP SCRIPT
-org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=<Local.IP.Address>
-org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=<Public.IP.Address>
+sed -i "s|.*DefaultLimitNOFILE=.*|DefaultLimitNOFILE=65000|g" /etc/systemd/system.conf
+sed -i "s|.*DefaultLimitNPROC=.*|DefaultLimitNPROC=65000|g" /etc/systemd/system.conf
+sed -i "s|.*DefaultTasksMax=.*|DefaultTasksMax=65000|g" /etc/systemd/system.conf
