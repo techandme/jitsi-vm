@@ -79,7 +79,6 @@ check_universe
 # Install needed dependencies
 install_if_not lshw
 install_if_not net-tools
-install_if_not whiptail
 install_if_not apt-utils
 install_if_not gnupg2
 install_if_not nginx-full
