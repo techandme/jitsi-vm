@@ -2,7 +2,7 @@
 
 # T&M Hansson IT AB © - 2023, https://www.hanssonit.se/
 # GNU General Public License v3.0
-# https://github.com/nextcloud/vm/blob/master/LICENSE
+# https://github.com/techandme/jitsi-vm/blob/main/LICENSE
 
 # shellcheck disable=SC2034
 true
@@ -23,8 +23,8 @@ LETSENCRYPTPATH="/etc/letsencrypt"
 CERTFILES="$LETSENCRYPTPATH/live"
 DHPARAMS_TLS="$CERTFILES/$TLSDOMAIN/dhparam.pem"
 DHPARAMS_SUB="$CERTFILES/$SUBDOMAIN/dhparam.pem"
-TLS_CONF="nextcloud_tls_domain_self_signed.conf"
-HTTP_CONF="nextcloud_http_domain_self_signed.conf"
+TLS_CONF="jitsi_tls_domain_self_signed.conf"
+HTTP_CONF="jitsi_http_domain_self_signed.conf"
 
 # Collabora App
 HTTPS_CONF="$SITES_AVAILABLE/$SUBDOMAIN.conf"
@@ -38,21 +38,20 @@ PHP_POOL_DIR=$PHP_FPM_DIR/pool.d
 PHP_MODS_DIR=/etc/php/"$PHPVER"/mods-available
 
 # User information
-GUIUSER=ncadmin
-GUIPASS=nextcloud
 UNIXUSER=$SUDO_USER
 UNIXUSER_PROFILE="/home/$UNIXUSER/.bash_profile"
 ROOT_PROFILE="/root/.bash_profile"
 
-ISSUES="https://github.com/nextcloud/vm/issues"
+ISSUES="https://github.com/techandme/jitsi-vm/issues"
 
 # Repo
-GITHUB_REPO="https://raw.githubusercontent.com/nextcloud/vm/master"
+GITHUB_REPO="https://raw.githubusercontent.com/techandme/jitsi-vm/main"
 STATIC="$GITHUB_REPO/static"
 LETS_ENC="$GITHUB_REPO/lets-encrypt"
+NETWORK="$GITHUB_REPO/network"
 
 # Whiptails
-TITLE="Nextcloud VM - $(date +%Y)"
+TITLE="Jitsi VM - $(date +%Y)"
 [ -n "$SCRIPT_NAME" ] && TITLE+=" - $SCRIPT_NAME"
 CHECKLIST_GUIDE="Navigate with the [ARROW] keys and (de)select with the [SPACE] key. \
 Confirm by pressing [ENTER]. Cancel by pressing [ESC]."
@@ -303,7 +302,7 @@ then
         openssl dhparam -out "$DHPARAMS_TLS" 2048
     fi
     # Choose which port for public access
-    msg_box "You will now be able to choose which port you want to put your Nextcloud on for public access.\n
+    msg_box "You will now be able to choose which port you want to put your Jitsi on for public access.\n
 The default port is 443 for HTTPS and if you don't change port, that's the port we will use.\n
 Please keep in mind NOT to use the following ports as they are likely in use already:
 ${NONO_PORTS[*]}"
@@ -343,7 +342,7 @@ There are different configs you can try in Let's Encrypt's user guide:
 https://letsencrypt.readthedocs.org/en/latest/index.html
 Please check the guide for further information on how to enable TLS.
 This script is developed on GitHub, feel free to contribute:
-https://github.com/nextcloud/vm"
+https://github.com/techandme/jitsi-vm/"
 
 if [ -n "$2" ]
 then
@@ -432,7 +431,7 @@ fi
 
 # Test RAM size
 # Call it like this: ram_check [amount of min RAM in GB] [for which program]
-# Example: ram_check 2 Nextcloud
+# Example: ram_check 2 Jitsi
 ram_check() {
 install_if_not bc
 # First, we need to check locales, since the functino depends on it.
@@ -465,7 +464,7 @@ fi
 
 # Test number of CPU
 # Call it like this: cpu_check [amount of min CPU] [for which program]
-# Example: cpu_check 2 Nextcloud
+# Example: cpu_check 2 Jitsi
 cpu_check() {
 nr_cpu="$(nproc)"
 if [ "${nr_cpu}" -lt "${1}" ]
@@ -485,13 +484,6 @@ then
     print_text_in_color "$ICyan" "Sorry but something went wrong. Please report \
 this issue to $ISSUES and include the output of the error message. Thank you!"
     print_text_in_color "$IRed" "$* failed"
-    if nextcloud_occ_no_check -V > /dev/null
-    then
-        notify_admin_gui \
-        "Sorry but something went wrong. Please report this issue to \
-$ISSUES and include the output of the error message. Thank you!" \
-        "$* failed"
-    fi
     exit 1
 fi
 }
