@@ -2,7 +2,7 @@
 
 # T&M Hansson IT AB © - 2023, https://www.hanssonit.se/
 # GNU General Public License v3.0
-# https://github.com/nextcloud/vm/blob/master/LICENSE
+# https://github.com/techandme/jitsi-vm/blob/main/LICENSE
 
 # Prefer IPv4 for apt
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
@@ -118,3 +118,44 @@ ufw status verbose
 sed -i "s|.*DefaultLimitNOFILE=.*|DefaultLimitNOFILE=65000|g" /etc/systemd/system.conf
 sed -i "s|.*DefaultLimitNPROC=.*|DefaultLimitNPROC=65000|g" /etc/systemd/system.conf
 sed -i "s|.*DefaultTasksMax=.*|DefaultTasksMax=65000|g" /etc/systemd/system.conf
+
+# Force MOTD to show correct number of updates
+if is_this_installed update-notifier-common
+then
+    sudo /usr/lib/update-notifier/update-motd-updates-available --force
+fi
+
+# It has to be this order:
+# Download scripts
+# chmod +x
+# Set permissions for ncadmin in the change scripts
+
+print_text_in_color "$ICyan" "Getting scripts from GitHub to be able to run the first setup..."
+
+# Get needed scripts for first bootup
+download_script GITHUB_REPO jitsi-startup-script
+download_script STATIC instruction
+download_script STATIC history
+download_script NETWORK static_ip
+# Moved from the startup script 2021-01-04
+download_script STATIC welcome
+
+# Make $SCRIPTS excutable
+chmod +x -R "$SCRIPTS"
+chown root:root -R "$SCRIPTS"
+
+# Prepare first bootup
+check_command run_script STATIC change-jitsiadmin-profile
+check_command run_script STATIC change-root-profile
+
+# Disable hibernation
+print_text_in_color "$ICyan" "Disable hibernation..."
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+# Reboot
+if [ -z "$PROVISIONING" ]
+then
+    msg_box "Installation almost done, system will reboot when you hit OK.
+After reboot, please login to run the setup script."
+fi
+reboot
