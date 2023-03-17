@@ -592,6 +592,54 @@ add_trusted_key_and_repo() {
     fi
 }
 
+# call like: download_script folder_variable name_of_script
+# e.g. download_script MENU additional_apps
+# Use it for functions like download_static_script
+download_script() {
+    download_script_function_in_use=yes
+    rm -f "${SCRIPTS}/${2}.sh" "${SCRIPTS}/${2}.php" "${SCRIPTS}/${2}.py"
+    if ! { curl_to_dir "${!1}" "${2}.sh" "$SCRIPTS" || curl_to_dir "${!1}" "${2}.php" "$SCRIPTS" || curl_to_dir "${!1}" "${2}.py" "$SCRIPTS"; }
+    then
+        print_text_in_color "$IRed" "Downloading ${2} failed"
+        sleep 2
+        msg_box "Script failed to download. Please run: \
+'sudo curl -sLO ${!1}/${2}.sh|php|py' and try again.
+If it still fails, please report this issue to: $ISSUES."
+        exit 1
+    fi
+}
+
+# call like: run_script folder_variable name_of_script
+# e.g. run_script MENU additional_apps
+# Use it for functions like run_script STATIC
+run_script() {
+    rm -f "${SCRIPTS}/${2}.sh" "${SCRIPTS}/${2}.php" "${SCRIPTS}/${2}.py"
+    if download_script "${1}" "${2}"
+    then
+        if [ -f "${SCRIPTS}/${2}".sh ]
+        then
+            bash "${SCRIPTS}/${2}.sh"
+            rm -f "${SCRIPTS}/${2}.sh"
+        elif [ -f "${SCRIPTS}/${2}".php ]
+        then
+            php "${SCRIPTS}/${2}.php"
+            rm -f "${SCRIPTS}/${2}.php"
+        elif [ -f "${SCRIPTS}/${2}".py ]
+        then
+            install_if_not python3
+            python3 "${SCRIPTS}/${2}.py"
+            rm -f "${SCRIPTS}/${2}.py"
+        fi
+    else
+        print_text_in_color "$IRed" "Running ${2} failed"
+        sleep 2
+        msg_box "Script failed to execute. Please run: \
+'sudo curl -sLO ${!1}/${2}.sh|php|py' and try again.
+If it still fails, please report this issue to: $ISSUES."
+        exit 1
+    fi
+}
+
 ## bash colors
 # Reset
 Color_Off='\e[0m'       # Text Reset
