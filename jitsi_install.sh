@@ -43,7 +43,7 @@ SCRIPT_NAME="Jitsi Install Script"
 SCRIPT_EXPLAINER="This script is installing all requirements that are needed for Jitsi to run.
 It's the first of two parts that are necessary to finish your customized Jitsi installation."
 # shellcheck source=lib.sh
-source <(curl -sL https://raw.githubusercontent.com/techandme/jitsi-vm/dev/lib.sh)
+source <(curl -sL https://raw.githubusercontent.com/techandme/jitsi-vm/main/lib.sh)
 
 # Check for errors + debug code and abort if something isn't right
 # 1 = ON
@@ -128,9 +128,11 @@ fi
 # It has to be this order:
 # Download scripts
 # chmod +x
-# Set permissions for ncadmin in the change scripts
+# Set permissions for jitsi in the change scripts
 
 print_text_in_color "$ICyan" "Getting scripts from GitHub to be able to run the first setup..."
+
+mkdir -p "$SCRIPTS"
 
 # Get needed scripts for first bootup
 download_script GITHUB_REPO jitsi-startup-script
