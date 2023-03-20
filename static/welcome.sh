@@ -8,7 +8,6 @@ ADDRESS=$(hostname -I | cut -d ' ' -f 1)
 
 clear
 figlet -f small \~\* Jitsi \*\~
-\** Jitsi \**
 echo "https://www.hanssonit.se/jitsi-vm"
 echo
 echo
