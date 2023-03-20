@@ -7,7 +7,8 @@ WANIP4=$(curl -s -k -m 5 -4 https://api64.ipify.org)
 ADDRESS=$(hostname -I | cut -d ' ' -f 1)
 
 clear
-figlet -f small ~* Jitsi *~
+figlet -f small \~\* Jitsi \*\~
+\** Jitsi \**
 echo "https://www.hanssonit.se/jitsi-vm"
 echo
 echo
