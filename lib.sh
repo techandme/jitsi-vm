@@ -93,6 +93,54 @@ then
 fi
 }
 
+network_ok() {
+version(){
+    local h t v
+
+    [[ $2 = "$1" || $2 = "$3" ]] && return 0
+
+    v=$(printf '%s\n' "$@" | sort -V)
+    h=$(head -n1 <<<"$v")
+    t=$(tail -n1 <<<"$v")
+
+    [[ $2 != "$h" && $2 != "$t" ]]
+}
+if version 20.04 "$DISTRO" 22.04.10
+then
+    print_text_in_color "$ICyan" "Testing if network is OK..."
+    if site_200 github.com
+    then
+        return
+    fi
+    if ! netplan apply
+    then
+        systemctl restart systemd-networkd > /dev/null
+    fi
+    # Check the connention
+    countdown 'Waiting for network to restart...' 3
+    if ! site_200 github.com
+    then
+        # sleep 10 seconds so that some slow networks have time to restart
+        countdown 'Not online yet, waiting a bit more...' 10
+        if ! site_200 github.com
+        then
+            # sleep 30 seconds so that some REALLY slow networks have time to restart
+            countdown 'Not online yet, waiting a bit more (final attempt)...' 30
+            site_200 github.com
+        fi
+    fi
+else
+    msg_box "Your current Ubuntu version is $DISTRO but must be between 20.04 - 22.04.10 to run this script."
+    msg_box "Please contact us to get support for upgrading your server:
+https://www.hanssonit.se/#contact
+https://shop.hanssonit.se/"
+    msg_box "We will now pause for 60 seconds. Please press CTRL+C when prompted to do so."
+    countdown "Please press CTRL+C to abort..." 60
+fi
+}
+
+
+
 # Check if process is runnnig: is_process_running dpkg
 is_process_running() {
 PROCESS="$1"
