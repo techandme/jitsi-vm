@@ -141,6 +141,7 @@ download_script STATIC instruction
 download_script STATIC history
 download_script NETWORK static_ip
 download_script STATIC welcome
+download_script STATIC fetch_lib
 
 # Make $SCRIPTS excutable
 chmod +x -R "$SCRIPTS"
