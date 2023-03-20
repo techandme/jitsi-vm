@@ -69,6 +69,11 @@ then
     exit 1
 fi
 
+# Create new current user
+download_script STATIC adduser
+bash "$SCRIPTS"/adduser.sh "jitsi_install_production.sh"
+rm -f "$SCRIPTS"/adduser.sh
+
 # Automatically restart services
 # Restart mode: (l)ist only, (i)nteractive or (a)utomatically.
 sed -i "s|#\$nrconf{restart} = .*|\$nrconf{restart} = 'a';|g" /etc/needrestart/needrestart.conf
