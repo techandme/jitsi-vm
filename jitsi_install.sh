@@ -69,6 +69,11 @@ then
     exit 1
 fi
 
+# Create new current user
+download_script STATIC adduser
+bash "$SCRIPTS"/adduser.sh "jitsi_install_production.sh"
+rm -f "$SCRIPTS"/adduser.sh
+
 # Automatically restart services
 # Restart mode: (l)ist only, (i)nteractive or (a)utomatically.
 sed -i "s|#\$nrconf{restart} = .*|\$nrconf{restart} = 'a';|g" /etc/needrestart/needrestart.conf
@@ -84,6 +89,7 @@ install_if_not gnupg2
 install_if_not nginx-full
 install_if_not apt-transport-https
 install_if_not ufw
+install_if_not figlet
 
 # Nice to have dependencies
 install_if_not bash-completion
@@ -140,6 +146,7 @@ download_script STATIC instruction
 download_script STATIC history
 download_script NETWORK static_ip
 download_script STATIC welcome
+download_script STATIC fetch_lib
 
 # Make $SCRIPTS excutable
 chmod +x -R "$SCRIPTS"
