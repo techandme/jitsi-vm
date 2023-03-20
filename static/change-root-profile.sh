@@ -27,9 +27,9 @@ then
     fi
 fi
 
-if [ -x /var/scripts/nextcloud-startup-script.sh ]
+if [ -x /var/scripts/jitsi-startup-script.sh ]
 then
-    /var/scripts/nextcloud-startup-script.sh
+    /var/scripts/jitsi-startup-script.sh
 fi
 
 if [ -x /var/scripts/history.sh ]
@@ -43,8 +43,6 @@ ROOT-PROFILE
 
 # Add Aliases
 {
-echo "alias nextcloud_occ='sudo -u www-data php $NCPATH/occ'"
-echo "alias update_nextcloud='bash $SCRIPTS/update.sh'"
-echo "alias main_menu='bash $SCRIPTS/menu.sh'"
+echo "alias restart_jitsi='bash $SCRIPTS/restart-jitsi.sh'"
 } > /root/.bash_aliases
 
