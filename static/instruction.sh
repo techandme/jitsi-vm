@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # T&M Hansson IT AB © - 2023, https://www.hanssonit.se/
 
