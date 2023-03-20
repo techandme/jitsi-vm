@@ -640,6 +640,44 @@ If it still fails, please report this issue to: $ISSUES."
     fi
 }
 
+curl_to_dir() {
+if [ ! -d "$3" ]
+then
+    mkdir -p "$3"
+fi
+    rm -f "$3"/"$2"
+    if [ -n "$download_script_function_in_use" ]
+    then
+        curl -sfL "$1"/"$2" -o "$3"/"$2"
+    else
+        local retries=0
+        while :
+        do
+            if [ "$retries" -ge 10 ]
+            then
+                if yesno_box_yes "Tried 10 times but didn't succeed. We will now exit the script because it might break things. You can choose 'No' to continue on your own risk."
+                then
+                    exit 1
+                else
+                    return 1
+                fi
+            fi
+            if ! curl -sfL "$1"/"$2" -o "$3"/"$2"
+            then
+                msg_box "We just tried to fetch '$1/$2', but it seems like the server for the download isn't reachable, or that a temporary error occurred. We will now try again.
+Please report this issue to $ISSUES"
+                retries=$((retries+1))
+                print_text_in_color "$ICyan" "$retries of 10 retries."
+                countdown "Trying again in 30 seconds..." "30"
+            else
+                break
+            fi
+        done
+    fi
+}
+
+
+
 ## bash colors
 # Reset
 Color_Off='\e[0m'       # Text Reset
