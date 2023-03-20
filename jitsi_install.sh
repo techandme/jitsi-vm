@@ -84,6 +84,7 @@ install_if_not gnupg2
 install_if_not nginx-full
 install_if_not apt-transport-https
 install_if_not ufw
+install_if_not figlet
 
 # Nice to have dependencies
 install_if_not bash-completion
