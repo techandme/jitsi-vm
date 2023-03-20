@@ -139,7 +139,6 @@ download_script GITHUB_REPO jitsi-startup-script
 download_script STATIC instruction
 download_script STATIC history
 download_script NETWORK static_ip
-# Moved from the startup script 2021-01-04
 download_script STATIC welcome
 
 # Make $SCRIPTS excutable
