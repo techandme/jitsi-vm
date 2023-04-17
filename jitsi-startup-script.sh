@@ -179,6 +179,7 @@ echo "org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$WANIP4" >> /etc/jitsi/
 
 # Cleanup 1
 rm -f "$SCRIPTS/ip.sh"
+rm -f "$SCRIPTS/instruction.sh"
 rm -f "$SCRIPTS/static_ip.sh"
 rm -f "$SCRIPTS/lib.sh"
 rm -f "$SCRIPTS/adduser.sh"
