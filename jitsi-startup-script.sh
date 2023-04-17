@@ -166,9 +166,6 @@ else
 fi
 unset UNIX_PASSWORD
 
-a2dismod status
-restart_webserver
-
 # Install Jitsi
 install_if_not jitsi-meet # maybe it's possible to pass $1 for domain?
 
