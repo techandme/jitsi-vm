@@ -91,6 +91,7 @@ install_if_not nginx-full
 install_if_not apt-transport-https
 install_if_not ufw
 install_if_not figlet
+install_if_not cron
 
 # Nice to have dependencies
 install_if_not bash-completion
