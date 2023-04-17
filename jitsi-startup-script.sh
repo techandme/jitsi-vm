@@ -174,7 +174,7 @@ install_if_not jitsi-meet # maybe it's possible to pass $1 for domain?
 
 {
 echo "# Custom
-org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$LANIP
+org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$ADDRESS
 # This can also be your DNS, e.g. jitsi.yourdomain.com
 org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$WANIP4"
 } >> /etc/jitsi/videobridge/sip-communicator.properties
