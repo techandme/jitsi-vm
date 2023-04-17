@@ -18,17 +18,14 @@ CODENAME=$(lsb_release -sc)
 KEYBOARD_LAYOUT=$(localectl status | grep "Layout" | awk '{print $3}')
 
 # Letsencrypt
-SITES_AVAILABLE="/etc/apache2/sites-available"
+SITES_AVAILABLE="/etc/nginx/sites-available"
 LETSENCRYPTPATH="/etc/letsencrypt"
 CERTFILES="$LETSENCRYPTPATH/live"
 DHPARAMS_TLS="$CERTFILES/$TLSDOMAIN/dhparam.pem"
 DHPARAMS_SUB="$CERTFILES/$SUBDOMAIN/dhparam.pem"
 TLS_CONF="jitsi_tls_domain_self_signed.conf"
 HTTP_CONF="jitsi_http_domain_self_signed.conf"
-
-# Collabora App
-HTTPS_CONF="$SITES_AVAILABLE/$SUBDOMAIN.conf"
-HTTP2_CONF="/etc/apache2/mods-available/http2.conf"
+HTTP2_CONF="/etc/nginx/mods-available/http2.conf"
 
 # PHP-FPM
 PHPVER=8.1
@@ -316,10 +313,10 @@ then
     uir_hsts="--uir --hsts"
 fi
 a2dissite 000-default.conf
-systemctl reload apache2.service
+systemctl reload nginx.service
 default_le="--cert-name $1 --key-type ecdsa --renew-by-default --no-eff-email --agree-tos $uir_hsts --server https://acme-v02.api.letsencrypt.org/directory -d $1"
 #http-01
-local  standalone="certbot certonly --standalone --pre-hook \"systemctl stop apache2.service\" --post-hook \"systemctl start apache2.service\" $default_le"
+local  standalone="certbot certonly --standalone --pre-hook \"systemctl stop nginx.service\" --post-hook \"systemctl start nginx.service\" $default_le"
 #tls-alpn-01
 local  tls_alpn_01="certbot certonly --preferred-challenges tls-alpn-01 $default_le"
 #dns
@@ -381,9 +378,9 @@ ${NONO_PORTS[*]}"
                 then
                     print_text_in_color "$ICyan" "Changing to port $DEDYNPORT for public access..."
                     # Main port
-                    if ! grep -q "Listen $DEDYNPORT" /etc/apache2/ports.conf
+                    if ! grep -q "Listen $DEDYNPORT" /etc/nginx/ports.conf
                     then
-                        echo "Listen $DEDYNPORT" >> /etc/apache2/ports.conf
+                        echo "Listen $DEDYNPORT" >> /etc/nginx/ports.conf
                         restart_webserver
                     fi
                     break
@@ -474,7 +471,7 @@ Please follow this guide to open ports in your router or firewall:\nhttps://www.
 fi
 }
 
-# Check if program is installed (is_this_installed apache2)
+# Check if program is installed (is_this_installed nginx)
 is_this_installed() {
 if dpkg-query -W -f='${Status}' "${1}" | grep -q "ok installed"
 then
@@ -739,6 +736,11 @@ Please report this issue to $ISSUES"
     fi
 }
 
+restart_webserver() {
+print_text_in_color "$ICyan" "Restarting Nginx.."
+sleep 1
+check_command systemctl restart nginx.service
+}
 
 
 ## bash colors
