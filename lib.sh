@@ -51,6 +51,20 @@ LETS_ENC="$GITHUB_REPO/lets-encrypt"
 NETWORK="$GITHUB_REPO/network"
 MENU="$GITHUB_REPO/menu"
 
+# Network
+IFACE=$(ip r | grep "default via" | awk '{print $5}')
+IFACE2=$(ip -o link show | awk '{print $2,$9}' | grep 'UP' | cut -d ':' -f 1)
+REPO=$(grep "^deb " /etc/apt/sources.list | grep http | awk '{print $2}' | head -1)
+ADDRESS=$(hostname -I | cut -d ' ' -f 1)
+WANIP4=$(curl -s -k -m 5 -4 https://api64.ipify.org)
+INTERFACES="/etc/netplan/nextcloud.yaml"
+GATEWAY=$(ip route | grep default | awk '{print $3}')
+# Internet DNS required when a check needs to be made to a server outside the home/SME
+INTERNET_DNS="9.9.9.9"
+# Default Quad9 DNS servers, overwritten by the systemd global DNS defined servers, if set
+DNS1="9.9.9.9"
+DNS2="149.112.112.112"
+
 # Whiptails
 TITLE="Jitsi VM - $(date +%Y)"
 [ -n "$SCRIPT_NAME" ] && TITLE+=" - $SCRIPT_NAME"
