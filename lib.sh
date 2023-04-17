@@ -49,6 +49,7 @@ GITHUB_REPO="https://raw.githubusercontent.com/techandme/jitsi-vm/main"
 STATIC="$GITHUB_REPO/static"
 LETS_ENC="$GITHUB_REPO/lets-encrypt"
 NETWORK="$GITHUB_REPO/network"
+MENU="$GITHUB_REPO/menu"
 
 # Whiptails
 TITLE="Jitsi VM - $(date +%Y)"
