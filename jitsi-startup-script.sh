@@ -194,8 +194,8 @@ truncate -s 0 \
     "/home/$UNIXUSER/.bash_history" \
     /var/spool/mail/root \
     "/var/spool/mail/$UNIXUSER" \
-    /var/log/apache2/access.log \
-    /var/log/apache2/error.log
+    /var/log/nginx/access.log \
+    /var/log/nginx/error.log
 
 sed -i "s|sudo -i||g" "$UNIXUSER_PROFILE"
 
