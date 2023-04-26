@@ -132,9 +132,6 @@ If you feel uncertain about the options during the setup, just choose the defaul
 When the setup is done, the server will automatically reboot.
 Please report any issues to: $ISSUES"
 
-# Change timezone in PHP
-sed -i "s|;date.timezone.*|date.timezone = $(cat /etc/timezone)|g" "$PHP_INI"
-
 # Generate new SSH Keys
 printf "\nGenerating new SSH keys for the server...\n"
 rm -v /etc/ssh/ssh_host_*
