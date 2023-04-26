@@ -218,7 +218,7 @@ ROOTNEWPROFILE
 
 # Upgrade system
 print_text_in_color "$ICyan" "System will now upgrade..."
-bash $SCRIPTS/update.sh minor
+bash $SCRIPTS/update.sh
 
 # Cleanup 2
 apt-get autoremove -y
