@@ -183,7 +183,6 @@ rm -f "/var/log/jitsi"/*.log
 rm -f "/var/log/prosody"/*.log
 
 find /root "/home/$UNIXUSER" -type f \( -name '*.sh*' -o -name '*.html*' -o -name '*.tar*' -o -name 'results' -o -name '*.zip*' \) -delete
-find "$NCPATH" -type f \( -name 'results' -o -name '*.sh*' \) -delete
 sed -i "s|instruction.sh|welcome.sh|g" "/home/$UNIXUSER/.bash_profile"
 
 truncate -s 0 \
